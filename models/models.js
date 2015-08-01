@@ -38,10 +38,17 @@ Quiz.count().success(function(count){
 	if(count === 0){//La tabla se inicializa solo si esta creada
 		Quiz.create({
 
-			pregunta:"Capital de Casa sola",
-			respuesta:"Que le importa"
+			pregunta:"Capital de Colombia",
+			respuesta:"Bogota"
 
-		}).success(function(){console.log("Base de datos inicializada")});
+		});
+
+		Quiz.create({
+
+			pregunta:"Capital de Francia",
+			respuesta:"Paris"
+
+		}).then(function(){console.log("Base de datos inicializada")});
 	}
 });
 });
