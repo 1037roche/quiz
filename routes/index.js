@@ -18,6 +18,8 @@ router.param('id' , quizController.load); // autoload :id
 router.get('/quizes'					, quizController.index);
 router.get('/quizes/:id(\\d+)'			, quizController.show);
 router.get('/quizes/:id(\\d+)/answer'	, quizController.answer);
+router.get('/quizes/new'				, quizController.new);
+router.post('/quizes/create'		    , quizController.create);
 
 //Se exportan el router para ser previamente utilizado
 module.exports = router;
