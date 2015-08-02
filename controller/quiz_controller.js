@@ -8,37 +8,47 @@ var models = require('../models/models.js');
 		 -La variable models tendra todo el modelo (transacciones a base de datos) que utilizara este controlador para su buen funcionamiento
 */
 
+// Autoload - factoriza el codigo si ruta incluye :id
+exports.load = function(req, res, next, id){
+
+	models.Quiz.find(id).then(function(quiz)
+	{
+		if(quiz)
+		{
+			req.quiz = quiz;
+			next();
+		
+		}else{next(new Error('No Existe el id = ' + id));}
+	}
+
+	).catch(function(error){next(error);});
+}
+
 //Get /quizes
 exports.index = function(req , res){
 
 	models.Quiz.findAll().then(function(quizes){
 		res.render('quizes/index', {quizes: quizes});
-	});
-
+	}
+	).catch(function(error){next(error);});
 }
 
 //Get /quizes/:id
 exports.show = function(req , res){
-
-	models.Quiz.find(req.params.id).then(function(quiz){
-
-		res.render('quizes/show', {quiz:quiz});
-		
-	});
+	
+	res.render('quizes/show', {quiz:req.quiz});
 }
 
 //Get /quizes/:id/answer
-exports.answer = function(req,res)
-{
-	models.Quiz.find(req.params.id).then(function(quiz){
-		
-		if(req.query.respuesta === quiz.respuesta)
-		{
-			res.render('quizes/answer', {quiz:quiz,respuesta:'Correcto'});
+exports.answer = function(req,res){		
+	
+	var respuesta = "Incorrecto";
 
-		}else
-		{
-			res.render('quizes/answer', {quiz:quiz,respuesta:'Incorrecto'});
-		}	
-	});	
+	if(req.query.respuesta === req.quiz.respuesta)
+	{
+		respuesta = "Correcto";
+	}
+
+	res.render('quizes/answer', {quiz:req.quiz,respuesta:respuesta});
+	
 }

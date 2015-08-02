@@ -11,6 +11,9 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Primera Pregunta' });
 });
 
+//Autoload de comandos con :id
+router.param('id' , quizController.load); // autoload :id
+
 //Se definen las vista apropiadas para cada repuestas REST
 router.get('/quizes'					, quizController.index);
 router.get('/quizes/:id(\\d+)'			, quizController.show);
