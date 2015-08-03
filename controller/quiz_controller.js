@@ -29,14 +29,19 @@ exports.create = function(req, res){
 
 	var quiz = models.Quiz.build(req.body.quiz);
 
-	console.log(quiz);
+	quiz.validate().then(function(err){
+			
+		if(err)
+		{
+			res.render('quizes/new' , {quiz:quiz, errors: err.errors});
 
-
-	//Guarda en la BD los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){
-		
-		res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
-
+		}else
+		{
+			//Guarda en la BD los campos pregunta y respuesta de quiz
+			quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){		
+				res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
+			});				
+		}
 	});
 }
 
@@ -44,14 +49,14 @@ exports.create = function(req, res){
 exports.new = function(req, res){
 						//crea objeto quiz
 	var quiz = models.Quiz.build({pregunta: 'Pregunta', respuesta: 'Respuesta'});
-	res.render('quizes/new' , {quiz: quiz});
+	res.render('quizes/new' , {quiz: quiz, errors: []);
 }
 
 //Get /quizes
 exports.index = function(req , res){
 
 	models.Quiz.findAll().then(function(quizes){
-		res.render('quizes/index', {quizes: quizes});
+		res.render('quizes/index', {quizes: quizes, errors: []});
 	}
 	).catch(function(error){next(error);});
 }
@@ -59,7 +64,7 @@ exports.index = function(req , res){
 //Get /quizes/:id
 exports.show = function(req , res){
 	
-	res.render('quizes/show', {quiz:req.quiz});
+	res.render('quizes/show', {quiz:req.quiz, errors: []});
 }
 
 //Get /quizes/:id/answer
@@ -72,6 +77,6 @@ exports.answer = function(req,res){
 		respuesta = "Correcto";
 	}
 
-	res.render('quizes/answer', {quiz:req.quiz,respuesta:respuesta});
+	res.render('quizes/answer', {quiz:req.quiz,respuesta:respuesta, errors: []});
 	
 }

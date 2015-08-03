@@ -8,7 +8,7 @@ var quizController = require('../controller/quiz_controller');
 //Se define la vista cuando la respuesta REST es /
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Primera Pregunta' });
+  res.render('index', { title: 'Quiz', errors: [] });
 });
 
 //Autoload de comandos con :id
