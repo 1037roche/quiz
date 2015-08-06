@@ -33,14 +33,18 @@ exports.create = function(req, res){
 
 		function(err)
 		{
-			res.render('/quizes/new', {quiz: quiz, errors: err.errors});
+			if(err)
+			{
+				res.render('/quizes/new', {quiz: quiz, errors: err.errors});
 
-		}else
-		{
-			//Guarda en la BD los campos pregunta y respuesta de quiz
-			quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){		
-				res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
-			});	
+			}else
+			{
+				//Guarda en la BD los campos pregunta y respuesta de quiz
+				quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){		
+					res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
+				});	
+			}
+
 		}
 	);
 }
