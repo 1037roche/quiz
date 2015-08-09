@@ -29,24 +29,10 @@ exports.create = function(req, res){
 
 	var quiz = models.Quiz.build(req.body.quiz);
 
-	quiz.validate().then(
-
-		function(err)
-		{
-			if(err)
-			{
-				res.render('/quizes/new', {quiz: quiz, errors: err.errors});
-
-			}else
-			{
-				//Guarda en la BD los campos pregunta y respuesta de quiz
-				quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){		
-					res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
-				});	
-			}
-
-		}
-	);
+	//Guarda en la BD los campos pregunta y respuesta de quiz
+	quiz.save({fields: ["pregunta", "respuesta"] }).then(function(){		
+		res.redirect('/quizes');//Redirecciona  HTTP (URL relativo) lista de preguntas
+	});	
 }
 
 //Get /quizes/new 
@@ -101,4 +87,10 @@ exports.update = function(req,res){
 	req.quiz.respuesta = req.body.quiz.respuesta;
 
 	req.quiz.save({fields:["pregunta", "respuesta"]}).then(function(){res.redirect('/quizes');});
+}
+
+//Delete /quizes/:id
+exports.destroy = function(req,res){		
+	
+	req.quiz.destroy().then(function(){res.redirect('/quizes');}).catch(function(error){next(error)});
 }
