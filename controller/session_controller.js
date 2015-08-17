@@ -29,9 +29,18 @@ exports.create = function(req, res){
 		res.redirect(req.session.redir.toString());//redirecciona path anterior al login
 	});
 }
-
+	
 //Delete /logout Destruye la session
 exports.destroy = function(req, res){
 	delete req.session.user;
 	res.redirect("/quizes");
+}
+
+//MW de Autorizacion de accesos HTTP registrados
+exports.loginRequired = function(req, res, next){
+	
+	if(req.session.user)
+		next();
+	else
+		res.redirect('/login');
 }

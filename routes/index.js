@@ -25,11 +25,12 @@ router.get('/lagout'							, sessionController.destroy);	//Destruir session
 router.get('/quizes'							, quizController.index);
 router.get('/quizes/:id(\\d+)'					, quizController.show);
 router.get('/quizes/:id(\\d+)/answer'			, quizController.answer);
-router.get('/quizes/new'						, quizController.new);
-router.post('/quizes/create'		    		, quizController.create);
-router.get('/quizes/:id(\\d+)/edit'				, quizController.edit);
-router.put('/quizes/:id(\\d+)'					, quizController.update);
-router.delete('/quizes/:id(\\d+)'				, quizController.destroy);
+
+router.get('/quizes/new'						, sessionController.loginRequired , quizController.new);
+router.post('/quizes/create'		    		, sessionController.loginRequired , quizController.create);
+router.get('/quizes/:id(\\d+)/edit'				, sessionController.loginRequired , quizController.edit);
+router.put('/quizes/:id(\\d+)'					, sessionController.loginRequired , quizController.update);
+router.delete('/quizes/:id(\\d+)'				, sessionController.loginRequired , quizController.destroy);
 
 router.get('/quizes/:id(\\d+)/comments/new'		, commentController.new);
 router.post('/quizes/:id(\\d+)/comments'		, commentController.create);
