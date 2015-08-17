@@ -98,3 +98,15 @@ exports.destroy = function(req,res){
 	
 	req.quiz.destroy().then(function(){res.redirect('/quizes');}).catch(function(error){next(error)});
 }
+
+ //GET /quizes/statistics
+exports.statistics = function(req,res){		
+	var objeto = {};
+	models.sequelize.query('SELECT COUNT(id) AS cantidad FROM "Quizzes";').then(function(cantidadQuizes) {
+		objeto.cantidadQuizes = cantidadQuizes[0].cantidad;
+		models.sequelize.query('SELECT COUNT(id) as cantidad FROM "Comments";').then(function(cantidadComentarios){
+			objeto.cantidadComentarios = cantidadComentarios[0].cantidad;
+			res.render('quizes/statistics', {objeto: objeto});
+		});
+	})
+}

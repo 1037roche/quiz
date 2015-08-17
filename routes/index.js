@@ -32,6 +32,8 @@ router.post('/quizes/create'		    		, sessionController.loginRequired , quizCont
 router.get('/quizes/:id(\\d+)/edit'				, sessionController.loginRequired , quizController.edit);
 router.put('/quizes/:id(\\d+)'					, sessionController.loginRequired , quizController.update);
 router.delete('/quizes/:id(\\d+)'				, sessionController.loginRequired , quizController.destroy);
+router.get('/statistics'						, quizController.statistics);
+
 
 router.get('/quizes/:id(\\d+)/comments/new'		, commentController.new);
 router.post('/quizes/:id(\\d+)/comments'		, commentController.create);

@@ -8,6 +8,7 @@ var bodyParser      = require('body-parser');
 var partials        = require('express-partials');
 var methodOverride  = require('method-override');
 var session         = require('express-session');
+var validateSession = require('./controller/session_controller');
 
 //Se llaman los enrutamientos
 var routes          = require('./routes/index');
@@ -45,6 +46,14 @@ app.use(function(req, res, next){
     res.locals.session = req.session;
     next();
 });
+
+//Valida la session que no halla caducado
+app.use(function(req, res, next){
+
+    validateSession.validarTimeSession(req, res);
+    next();
+});
+
 
 //Se configura las respuestas REST por medio del enrutador previamente invocado
 app.use('/', routes);

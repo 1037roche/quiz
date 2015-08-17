@@ -1,3 +1,5 @@
+
+
 //Get /login Formulario login
 exports.new = function(req, res){
 	var errors = req.session.errors || {};
@@ -23,8 +25,9 @@ exports.create = function(req, res){
 		}
 
 		//Se crea req.session.user y guarda campos id y username
-		//La session se define por la existencia de: req.session.user
-		req.session.user = {id: user.id, username: user.username};
+		//La session se define por la existencia de: req.session.user		
+		var dDate = new Date();
+		req.session.user = {id: user.id, username: user.username, minutos: dDate.getMinutes()};
 
 		res.redirect(req.session.redir.toString());//redirecciona path anterior al login
 	});
@@ -43,4 +46,25 @@ exports.loginRequired = function(req, res, next){
 		next();
 	else
 		res.redirect('/login');
+}
+
+//Validar que la session no halla caducado
+exports.validarTimeSession = function(req, res)
+{
+	if(req.session.user)
+	{		
+		var dDate = new Date();
+		var dMinutosSumados = req.session.user.minutos + 2;
+
+		if(dDate.getMinutes() >= dMinutosSumados)
+		{
+			delete req.session.user; 
+			res.redirect('/login');
+		}
+		else
+		{
+			req.session.user.minutos = dDate.getMinutes();
+		}
+		
+	}
 }
