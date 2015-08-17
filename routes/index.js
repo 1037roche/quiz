@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
 
 //Autoload de comandos con :id
 router.param('id' 								, quizController.load); 		// autoload :id
+router.param('commentId' 						, commentController.load); 		// autoload :commentId
 
 //Definicion de rutas de session
 router.get('/login'								, sessionController.new);		//Formulario de login
@@ -34,6 +35,7 @@ router.delete('/quizes/:id(\\d+)'				, sessionController.loginRequired , quizCon
 
 router.get('/quizes/:id(\\d+)/comments/new'		, commentController.new);
 router.post('/quizes/:id(\\d+)/comments'		, commentController.create);
+router.get('/quizes/:id(\\d+)/comments/:commentId(\\d+)/publish'	,sessionController.loginRequired , commentController.publish);
 
 //Se exportan el router para ser previamente utilizado
 module.exports = router;

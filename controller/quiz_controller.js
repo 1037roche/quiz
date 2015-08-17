@@ -58,7 +58,6 @@ exports.index = function(req , res){
 
 //Get /quizes/:id
 exports.show = function(req , res){
-	
 	res.render('quizes/show', {quiz:req.quiz});
 }
 
